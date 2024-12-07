@@ -25,10 +25,14 @@ resource "aws_route_table_association" "route_table_association_to_subnet" {
 
 }
 
+resource "aws_internet_gateway" "igw" {
+  vpc_id = var.vpc_id
+  tags       = merge(local.common_tags,{ Name= "${var.env}-igw" })
+}
 
-#resource "aws_route" "gw_route" {
-#  count          = var.internet_gateway ? 1 : 0
-#  route_table_id = aws_route_table.route_table.id
-#  destination_cidr_block = "0.0.0.0/0"
-#  gateway_id = var.internet_gateway_id
-#}
+resource "aws_route" "gw_route" {
+  count          = var.internet_gw ? 1 : 0
+  route_table_id = aws_route_table.route_table.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id = aws_internet_gateway.igw.id
+}
