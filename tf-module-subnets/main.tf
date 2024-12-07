@@ -22,7 +22,7 @@ resource "aws_route_table" "route_table" {
 
  }
 
-resource "aws_route_table_association" "private_route_table_association_to_private_subnets" {
+resource "aws_route_table_association" "route_table_association_to_subnet" {
   count = length(aws_subnet.subnet) # here we are iterating with count i.e you plz run times of private_subnet has
   route_table_id = aws_route_table.route_table.id
   subnet_id = aws_subnet.subnet.*.id[count.index]
