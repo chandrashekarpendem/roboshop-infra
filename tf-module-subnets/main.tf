@@ -26,9 +26,9 @@ resource "aws_route_table_association" "route_table_association_to_subnet" {
 }
 
 
-resource "aws_route" "gw_route" {
-  count          = var.internet_gateway ? 1 : 0
-  route_table_id = aws_route_table.route_table.id
-  destination_cidr_block = "0.0.0.0/0"
-  gateway_id = var.internet_gateway_id
-}
+#resource "aws_route" "gw_route" {
+#  count          = var.internet_gateway ? 1 : 0
+#  route_table_id = aws_route_table.route_table.id
+#  destination_cidr_block = "0.0.0.0/0"
+#  gateway_id = var.internet_gateway_id
+#}
