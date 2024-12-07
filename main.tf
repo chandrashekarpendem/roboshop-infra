@@ -17,6 +17,7 @@ module "subnets" {
   for_each   = var.subnets
   cidr_block = each.value.cidr_block
   name       = each.value.name
+  vpc_name = each.value.vpc_name
   gateway_id = module.network_vpc
   availability_zone = each.value.availability_zone
   vpc_id = lookup(lookup(module.network_vpc,each.value.vpc_name,null), "vpc_id", null)
