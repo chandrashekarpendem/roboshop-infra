@@ -27,6 +27,7 @@ resource "aws_route_table_association" "route_table_association_to_subnet" {
 
 resource "aws_route" "igw_route" {
   count = var.igw ? 1 : 0
+  destination_cidr_block = "0.0.0.0/0"
   route_table_id = aws_route_table.route_table.id
   gateway_id = var.gateway_id
 }
