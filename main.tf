@@ -30,7 +30,4 @@ output "vpc" {
   value = module.network_vpc
 }
 
-output "internet_gateway_id" {
-  value = lookup(lookup(module.network_vpc, "main", null),"internet_gateway_id", null)
-}
 
