@@ -5,3 +5,6 @@ variable "env" {}
 variable "name" {}
 variable "vpc_peering_connection_id" {}
 variable "default_vpc_id" {}
+variable "igw" {}
+variable "nat_gw" {}
+variable "gateway_id" {}
