@@ -21,7 +21,7 @@ module "subnets" {
   vpc_id                      = lookup(lookup(module.network_vpc,each.value.vpc_name,null), "vpc_id", null)
   vpc_peering_connection_id   = lookup(lookup(module.network_vpc,each.value.vpc_name,null), "vpc_peering_connection_id", null)
 #  internet_gateway_id         = lookup(lookup(module.network_vpc,each.value.vpc_name,null), "internet_gateway_id", null)
-   internet_gateway            = lookup(each.value, "internet_gateway", false )
+   internet_gw                 = lookup(each.value, "internet_gateway", false )
    nat_gw                      = lookup(each.value, "nat_gw", false )
 
 }
