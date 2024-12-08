@@ -5,7 +5,7 @@ module "network_vpc" {
   env                = var.env
   default_vpc_id     = var.default_vpc_id
   cidr_block         = each.value.cidr_block
-#  public_subnets_ids = lookup(lookup(module.subnets, "public", null), "subnet_ids", null)
+
 
 
 }
