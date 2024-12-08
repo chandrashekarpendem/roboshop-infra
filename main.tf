@@ -32,6 +32,6 @@ output "vpc" {
   value = module.network_vpc
 }
 
-output "subnets_ids" {
+output "subnets" {
   value = module.subnets
 }
