@@ -3,7 +3,7 @@ resource "aws_subnet" "subnet" {
   availability_zone = var.availability_zone[count.index]
   vpc_id = var.vpc_id
   cidr_block = var.cidr_block[count.index]
-  tags       = merge(local.common_tags,{ Name= "${var.env}-${name}-subnet_${count.index + 1}" })
+  tags       = merge(local.common_tags,{ Name= "${var.env}-${var.name}-subnet_${count.index + 1}" })
 }
 
 resource "aws_route_table" "route_table" {
@@ -14,7 +14,7 @@ resource "aws_route_table" "route_table" {
     cidr_block                = data.aws_vpc.default_vpc_info.cidr_block
     vpc_peering_connection_id = var.vpc_peering_connection_id
   }
-  tags       = merge(local.common_tags,{ Name= "${var.env}-${name}route_table" })
+  tags       = merge(local.common_tags,{ Name= "${var.env}-${var.name}route_table" })
 
  }
 

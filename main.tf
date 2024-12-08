@@ -6,6 +6,7 @@ module "network_vpc" {
   default_vpc_id     = var.default_vpc_id
   cidr_block         = each.value.cidr_block
 
+
 }
 
 module "subnets" {
@@ -30,4 +31,6 @@ output "vpc" {
   value = module.network_vpc
 }
 
-
+output "subnets_ids" {
+  value = module.subnets
+}
