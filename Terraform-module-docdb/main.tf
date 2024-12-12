@@ -39,7 +39,7 @@ tags = merge(local.common_tags, { Name="${var.env}-security_group" })
 #}
 
 resource "aws_docdb_cluster" "docdb_cluster" {
-  cluster_identifier = "Name=${var.env}-docdb_cluster"
+  cluster_identifier = "${var.env}-docdb_cluster"
   engine = "docdb"
   engine_version = var.engine_version
   master_username    = data.aws_ssm_parameter.docdb_user.value
