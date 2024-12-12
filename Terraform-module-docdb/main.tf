@@ -6,8 +6,8 @@ resource "aws_docdb_subnet_group" "docdb_subnet_group" {
 }
 
 resource "aws_security_group" "docdb_sg" {
-  name        = "Name=${var.env}-docdb_security_group"
-  description = "Name=${var.env}-docdb_security_group"
+  name        = "${var.env}-docdb_security_group"
+  description = "${var.env}-docdb_security_group"
   vpc_id = var.vpc_id
 
 
