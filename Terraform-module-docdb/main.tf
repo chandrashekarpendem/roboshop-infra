@@ -42,7 +42,6 @@ resource "aws_docdb_cluster" "docdb_cluster" {
   cluster_identifier = "Name=${var.env}-docdb_cluster"
   engine = "docdb"
   engine_version = var.engine_version
-  availability_zones = var.availability_zone
   master_username    = data.aws_ssm_parameter.docdb_user.value
   master_password    = data.aws_ssm_parameter.docdb_pass.value
   skip_final_snapshot = true
