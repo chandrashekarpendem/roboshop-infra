@@ -20,7 +20,9 @@ module "docdb" {
   for_each = var.docdb
   subnet_ids = lookup(lookup(lookup(lookup(module.network_vpc, each.value.vpc_name,null ), "private_subnets_ids", null), each.value.subnets_name, null),"subnets_ids", null)
   vpc_id = lookup(lookup(module.network_vpc,each.value.vpc_name,null ), "vpc_id",null)
-  allow_cidr_docdb = lookup(lookup(lookup(lookup(var.vpc, each.value.vpc_name, null ), "private_subnets" , null), "app",null), "cidr_block", null)
+#  allow_cidr_docdb = lookup(lookup(lookup(lookup(var.vpc, each.value.vpc_name, null ), "private_subnets" , null), "app",null), "cidr_block", null)
+  allow_cidr_docdb = lookup(lookup(lookup(lookup(module.network_vpc, each.value.vpc_name, null ), "private_subnets_ids", null), "app",null), "app_cidr_block" ,null)
+
   engine_version = each.value.engine_version
 
 }
