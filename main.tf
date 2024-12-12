@@ -19,7 +19,6 @@ module "docdb" {
 
   for_each = var.docdb
   subnet_ids = lookup(lookup(lookup(lookup(module.network_vpc, each.value.vpc_name,null ), "private_subnets_ids", null), each.value.subnets_name, null),"subnets_ids", null)
-  vpc_id = module.network_vpc.vpc_id
 
 
 }
