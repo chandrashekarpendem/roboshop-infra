@@ -30,13 +30,15 @@ resource "aws_security_group" "docdb_sg" {
 
 tags = merge(local.common_tags, { Name="${var.env}-security_group" })
 }
-#
-#resource "aws_docdb_cluster_instance" "cluster_instances" {
-#  count              = 2
-#  identifier         = "docdb-cluster-demo-${count.index}"
-#  cluster_identifier = aws_docdb_cluster.default.id
-#  instance_class     = "db.r5.large"
-#}
+
+resource "aws_docdb_cluster_instance" "cluster_instances" {
+  count              = var.number_of_instances
+  identifier         = "${var.env}-docdb-cluster-${count.index+1}"
+  cluster_identifier = aws_docdb_cluster.docdb_cluster.id
+  instance_class     = var.instance_class
+
+  tags = merge(local.common_tags, {Name="${var.env}-docdb_cluster_instance"})
+}
 
 resource "aws_docdb_cluster" "docdb_cluster" {
   cluster_identifier = "${var.env}-docdb-cluster"
