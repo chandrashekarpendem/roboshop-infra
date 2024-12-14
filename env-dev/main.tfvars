@@ -53,3 +53,40 @@ vpc = {
     }
 
   }
+
+  rds = {
+    main = {
+      vpc_name = "main"
+      subnets_name = "db"
+      engine  = "aurora-mysql"
+      engine_version = "5.7.mysql_aurora.2.11.1"
+      number_of_instances= 1
+      instance_class = "db.t3.small"
+    }
+
+  }
+
+elastic_cache_redis = {
+  main = {
+    vpc_name = "main"
+    subnets_name = "db"
+    num_node_groups = "6.x"
+    replicas_per_node_group = ""
+    node_type = "cache.t3.micro"
+  }
+
+}
+
+alb={
+  public = {
+  vpc_name = "main"
+  subnets_type = "public_subnets_ids"
+  subnets_name = "public"
+  }
+
+  private = {
+    vpc_name = "main"
+    subnets_type = "private_subnets_ids"
+    subnets_name = "app"
+  }
+}
