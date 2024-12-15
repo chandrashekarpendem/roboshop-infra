@@ -34,7 +34,7 @@ module "rds" {
   source = "./Terraform-module-rds"
   env                     = var.env
   for_each                = var.rds
-  number_of_instances     = each.value.number_of_instances
+  number_of_instance     = each.value.number_of_instance
   instance_class          = each.value.instance_class
   engine_version          = each.value.engine_version
   engine                  = each.value.engine
