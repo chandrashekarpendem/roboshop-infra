@@ -49,8 +49,8 @@ module "elastic_cache_redis" {
   env                     = var.env
   for_each                = var.elastic_cache_redis
   node_type               = each.value.node_type
-  replicas_per_node_group = each.value.replicas_per_node_group
-  num_node_groups         = each.value.num_node_groups
+  engine_version          = each.value.engine_version
+  num_cache_nodes         = each.value.num_cache_nodes
   vpc_id                  = lookup(lookup(module.network_vpc,each.value.vpc_name,null ), "vpc_id",null)
   allow_cidr_rds          = lookup(lookup(lookup(lookup(module.network_vpc, each.value.vpc_name, null ), "private_subnets_ids", null), "app",null), "app_cidr_block" ,null)
   subnet_ids              = lookup(lookup(lookup(lookup(module.network_vpc, each.value.vpc_name,null ), "private_subnets_ids", null), each.value.subnets_name, null),"subnets_ids", null)
