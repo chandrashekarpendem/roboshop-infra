@@ -1,5 +1,5 @@
 resource "aws_elasticache_subnet_group" "elastic_cache_subnet_group" {
-  name = "${var.env}-elastic_cache_subnet_group"
+  name = "${var.env}-elastic-cache-subnet-group"
   subnet_ids = var.subnet_ids
 
   tags = merge(local.common_tags, {Name="${var.env}-elastic_cache_subnet_group"})
