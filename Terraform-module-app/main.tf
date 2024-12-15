@@ -5,7 +5,7 @@ resource "aws_security_group" "app_sg" {
 
 
   ingress {
-    description      = "app"
+    description      = "HTTP"
     from_port        = var.app_port
     to_port          = var.app_port
     protocol         = "tcp"

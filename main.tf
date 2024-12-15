@@ -71,7 +71,7 @@ module "alb" {
 module "apps" {
   source = "./Terraform-module-app"
   env                     = var.env
-  for_each                = var.alb
+  for_each                = var.apps
 
   component               = each.value.component
   app_port                = each.value.app_port
