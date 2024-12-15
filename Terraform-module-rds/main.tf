@@ -51,6 +51,7 @@ resource "aws_rds_cluster" "rds-cluster" {
   vpc_security_group_ids  = [aws_security_group.rds_sg.id]
   storage_encrypted       = true
   kms_key_id              = data.aws_kms_key.roboshop_key.arn
+  skip_final_snapshot     = true
 
   tags = merge(local.common_tags, {Name="${var.env}-rds-cluster"})
 }

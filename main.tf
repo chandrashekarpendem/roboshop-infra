@@ -72,6 +72,7 @@ module "apps" {
   source = "./Terraform-module-app"
   env                     = var.env
   for_each                = var.apps
+  allow_bastion_cidr      = var.allow_bastion_cidr
 
   component               = each.value.component
   app_port                = each.value.app_port

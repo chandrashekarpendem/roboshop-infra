@@ -6,4 +6,5 @@ variable "rds" {}
 variable "elastic_cache_redis" {}
 variable "alb" {}
 variable "apps" {}
+variable "allow_bastion_cidr" {}
 
