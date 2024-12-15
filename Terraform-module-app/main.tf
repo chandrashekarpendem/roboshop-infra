@@ -25,7 +25,7 @@ resource "aws_security_group" "app_sg" {
 }
 
 resource "aws_launch_template" "app_launch_template" {
-  name_prefix = "${var.env}-app-launch-template"
+  name_prefix = "${var.env}-app-${var.component}-launch-template"
   image_id = data.aws_ami.roboshop_ami.id
   instance_type = var.instances_type
 
