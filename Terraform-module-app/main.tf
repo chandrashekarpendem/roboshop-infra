@@ -23,3 +23,28 @@ resource "aws_security_group" "app_sg" {
 
   tags = merge(local.common_tags, { Name="${var.env}_app_security_group" })
 }
+
+resource "aws_autoscaling_group" "auto_scaling_group" {
+  name                      = "${var.env}-${var.component}-autoscaling-group"
+  max_size                  = var.max_size
+  min_size                  = var.min_size
+  desired_capacity          = var.desired_capacity
+  force_delete              = true
+  vpc_zone_identifier       = var.subnet_ids
+  target_group_arns = [aws_lb_target_group.target_group.arn]
+
+#  launch_template {
+#    id = aws_launch_template.launch_template.id
+#    version = "$Latest"
+#  }
+
+#  dynamic "tag" {
+#    for_each              = local.common_tags
+#    content {
+#      key                 = tag.value.key
+#      value               = tag.value.value
+#      propagate_at_launch = true
+#    }
+#  }
+
+}

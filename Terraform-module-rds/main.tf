@@ -43,7 +43,7 @@ resource "aws_rds_cluster" "rds-cluster" {
 
   engine             = var.engine
   engine_version     = var.engine_version
-  db_cluster_instance_class = var.instance_class
+#  db_cluster_instance_class = var.instance_class
 
   master_username         = data.aws_ssm_parameter.rds_user.value
   master_password         = data.aws_ssm_parameter.rds_pass.value
