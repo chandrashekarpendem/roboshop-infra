@@ -62,9 +62,22 @@ module "alb" {
   for_each                = var.alb
 
   subnets_name            = each.value.subnets_name
+  internal                = each.value.internal
+  vpc_id                  = lookup(lookup(module.network_vpc,each.value.vpc_name,null ), "vpc_id",null)
+  allow_cidr_alb          = lookup(lookup(lookup(lookup(module.network_vpc, each.value.vpc_name, null ), "private_subnets_ids", null), "app",null), "app_cidr_block" ,null)
+  subnet_ids              = lookup(lookup(lookup(lookup(module.network_vpc, each.value.vpc_name,null ), each.value.subnets_type, null), each.value.subnets_name, null),"subnets_ids", null)
+}
+
+module "apps" {
+  source = "./Terraform-module-app"
+  env                     = var.env
+  for_each                = var.alb
+
+  component               = each.value.component
+  app_port                = each.value.app_port
 
   vpc_id                  = lookup(lookup(module.network_vpc,each.value.vpc_name,null ), "vpc_id",null)
-  allow_cidr_rds          = lookup(lookup(lookup(lookup(module.network_vpc, each.value.vpc_name, null ), "private_subnets_ids", null), "app",null), "app_cidr_block" ,null)
+  allow_cidr_apps         = lookup(lookup(lookup(lookup(var.vpc, each.value.vpc_name, null ), each.value.allow_cidr_subnets_type , null), each.value.allow_cidr_subnets_name,null), "cidr_block", null)
   subnet_ids              = lookup(lookup(lookup(lookup(module.network_vpc, each.value.vpc_name,null ), each.value.subnets_type, null), each.value.subnets_name, null),"subnets_ids", null)
 }
 output "vpc" {

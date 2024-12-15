@@ -56,37 +56,91 @@ vpc = {
 
   rds = {
     main = {
-      vpc_name = "main"
-      subnets_name = "db"
-      engine  = "aurora-mysql"
-      engine_version = "5.7.mysql_aurora.2.11.1"
-      number_of_instances= 1
-      instance_class = "db.t3.small"
+      vpc_name              = "main"
+      subnets_name          = "db"
+      engine                = "aurora-mysql"
+      engine_version        = "5.7.mysql_aurora.2.11.1"
+      number_of_instances   = 1
+      instance_class        = "db.t3.small"
     }
 
   }
 
 elastic_cache_redis = {
   main = {
-    vpc_name = "main"
-    subnets_name = "db"
+    vpc_name        = "main"
+    subnets_name    = "db"
     num_node_groups = "6.x"
     replicas_per_node_group = ""
-    node_type = "cache.t3.micro"
+    node_type       = "cache.t3.micro"
   }
 
 }
 
-alb={
-  public = {
-  vpc_name = "main"
-  subnets_type = "public_subnets_ids"
-  subnets_name = "public"
+alb = {
+    public = {
+      vpc_name      = "main"
+      subnets_type  = "public_subnets_ids"
+      subnets_name  = "public"
+      internal      = false
+
   }
 
   private = {
-    vpc_name = "main"
-    subnets_type = "private_subnets_ids"
-    subnets_name = "app"
+    vpc_name      = "main"
+    subnets_type  = "private_subnets_ids"
+    subnets_name  = "app"
+    internal      = true
+  }
+}
+
+
+apps = {
+  frontend = {
+    component     = "frontend"
+    vpc_name      = "main"
+    subnets_type  = "private_subnets_ids"
+    subnets_name  = "web"
+    app_port      = 80
+    allow_cidr_subnets_type = "public_subnets"
+    allow_cidr_subnets_name = "public"
+  }
+
+  catalogue = {
+    component     = "catalogue"
+    vpc_name      = "main"
+    subnets_type  = "private_subnets_ids"
+    subnets_name  = "app"
+    app_port      = 8080
+    allow_cidr_subnets_type = "private_subnets"
+    allow_cidr_subnets_name = "app"
+  }
+
+  cart = {
+    component     = "cart"
+    vpc_name      = "main"
+    subnets_type  = "private_subnets_ids"
+    subnets_name  = "app"
+    app_port      = 8080
+    allow_cidr_subnets_type = "private_subnets"
+    allow_cidr_subnets_name = "app"
+  }
+  user = {
+    component     = "user"
+    vpc_name      = "main"
+    subnets_type  = "private_subnets_ids"
+    subnets_name  = "app"
+    app_port      = 8080
+    allow_cidr_subnets_type = "private_subnets"
+    allow_cidr_subnets_name = "app"
+  }
+  payment = {
+    component     = "payment"
+    vpc_name      = "main"
+    subnets_type  = "private_subnets_ids"
+    subnets_name  = "app"
+    app_port      = 8080
+    allow_cidr_subnets_type = "private_subnets"
+    allow_cidr_subnets_name = "app"
   }
 }

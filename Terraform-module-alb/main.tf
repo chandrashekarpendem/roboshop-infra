@@ -9,7 +9,7 @@ resource "aws_security_group" "alb_sg" {
     from_port        = 80
     to_port          = 80
     protocol         = "tcp"
-    cidr_blocks      = var.allow_cidr_rds
+    cidr_blocks      = var.allow_cidr_alb
 
   }
 
@@ -21,5 +21,15 @@ resource "aws_security_group" "alb_sg" {
 
   }
 
-  tags = merge(local.common_tags, { Name="${var.env}-alb-security_group" })
+  tags = merge(local.common_tags, { Name="${var.env}-alb-${var.subnets_name}-security_group" })
+}
+
+resource "aws_alb" "ALB" {
+  name = "${var.env}-alb-${var.subnets_name}"
+  internal = var.internal
+  load_balancer_type = "application"
+  security_groups = [aws_security_group.alb_sg.id]
+  subnets = var.subnet_ids
+
+  tags = merge(local.common_tags, {NAME="${var.env}-alb-${var.subnets_name}"})
 }
