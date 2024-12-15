@@ -33,6 +33,7 @@ resource "aws_security_group" "elastic_cache_sg" {
 
 resource "aws_elasticache_replication_group" "elastic_cache_replication_group" {
   replication_group_id = "${var.env}-elastic-cache-replication-group"
+  replication_group_description = "${var.env}-elastic-cache-replication-group"
   node_type = var.node_type
   port = 6379
   subnet_group_name = aws_elasticache_subnet_group.elastic_cache_subnet_group.name
