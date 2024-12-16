@@ -31,12 +31,14 @@ resource "aws_security_group" "rds_sg" {
   tags = merge(local.common_tags, { Name="${var.env}-rds-security_group" })
 }
 
-#resource "aws_rds_cluster_instance" "rds-cluster_instances" {
-#  count              = var.number_of_instance
-#  identifier         = "${var.env}-rds-cluster-${count.index+1}"
-#  cluster_identifier = aws_rds_cluster.rds-cluster.id
-#
-#}
+resource "aws_rds_cluster_instance" "rds_cluster_instances" {
+  count              = var.number_of_instance
+  identifier         = "${var.env}-rds-${count.index +1}"
+  cluster_identifier = aws_rds_cluster.rds-cluster.id
+  instance_class     = var.instance_class
+  engine             = aws_rds_cluster.rds-cluster.engine
+  engine_version     = aws_rds_cluster.rds-cluster.engine_version
+}
 
 resource "aws_rds_cluster" "rds-cluster" {
   cluster_identifier = "${var.env}-rds-cluster"
@@ -56,4 +58,10 @@ resource "aws_rds_cluster" "rds-cluster" {
 
 
   tags = merge(local.common_tags, {Name="${var.env}-rds-cluster"})
+}
+
+resource "aws_ssm_parameter" "rds_cluster_endpoint" {
+  name  = "${var.env}.rds.endpoint"
+  type  = "String"
+  value = aws_rds_cluster.rds-cluster.endpoint
 }

@@ -1,3 +1,75 @@
+resource "aws_iam_role" "aws_app_instance_role" {
+  name = "${var.env}-${var.component}-role"
+
+
+  assume_role_policy = jsonencode({
+    Version          = "2012-10-17"
+    Statement        = [
+      {
+        Action       = "sts:AssumeRole"
+        Effect       = "Allow"
+        Sid          = ""
+        Principal    = {
+          Service    = "ec2.amazonaws.com"
+        }
+      },
+    ]
+  })
+
+  tags = merge (local.common_tags, { Name = "${var.env}-${var.component}-role" } )
+
+}
+
+resource "aws_iam_policy" "aws_parameter_policy" {
+  name        = "${var.env}-${var.component}-parameter_store_role"
+  path        = "/"
+  description = "${var.env}-${var.component}-parameter_store_role"
+
+  policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "VisualEditor0",
+        "Effect": "Allow",
+        "Action": [
+          "ssm:GetParameterHistory",
+          "ssm:GetParametersByPath",
+          "ssm:GetParameters",
+          "ssm:GetParameter"
+        ],
+        "Resource" : [
+          "arn:aws:ssm:us-east-1:225989332181:parameter/${var.env}.${var.component}*",
+          "arn:aws:ssm:us-east-1:225989332181:parameter/nexus*",
+          "arn:aws:ssm:us-east-1:225989332181:parameter/${var.env}.docdb*",
+          "arn:aws:ssm:us-east-1:225989332181:parameter/${var.env}.elastic**",
+          "arn:aws:ssm:us-east-1:225989332181:parameter/${var.env}.rds*",
+          "arn:aws:ssm:us-east-1:225989332181:parameter/${var.env}.rabbitmq*",
+          "arn:aws:ssm:us-east-1:225989332181:parameter/grafana*",
+          "arn:aws:ssm:us-east-1:225989332181:parameter/${var.env}-SSH*"
+
+
+        ]
+      },
+      {
+        "Sid": "VisualEditor1",
+        "Effect": "Allow",
+        "Action": "ssm:DescribeParameters",
+        "Resource": "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_instance_profile" "aws_app_instance_profile" {
+ role = aws_iam_role.aws_app_instance_role.name
+  name = "${var.env}-${var.component}-role"
+}
+
+resource "aws_iam_policy_attachment" "aws_policy_attachment_to_role" {
+  name       = "${var.env}-aws_policy_attachment_to_role"
+  policy_arn = aws_iam_policy.aws_parameter_policy.name
+}
+
 resource "aws_security_group" "app_sg" {
   name        = "${var.env}-${var.component}_security_group"
   description = "${var.env}-${var.component}_security_group"
@@ -37,7 +109,15 @@ resource "aws_launch_template" "app_launch_template" {
   image_id = data.aws_ami.roboshop_ami.id
   instance_type = var.instances_type
   vpc_security_group_ids = [aws_security_group.app_sg.id]
+  user_data = base64encode(templatefile("${path.module}/user_data.sh",{ component= var.component, env= var.env }))
 
+  iam_instance_profile {
+    arn = aws_iam_instance_profile.aws_app_instance_profile.arn
+  }
+
+  instance_market_options {
+    market_type = "spot"
+  }
 
 }
 

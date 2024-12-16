@@ -54,3 +54,22 @@ resource "aws_docdb_cluster" "docdb_cluster" {
 
   tags = merge(local.common_tags, { Name="${var.env}-docdb_cluster" })
 }
+
+
+resource "aws_ssm_parameter" "docdb_url_catalogue" {
+  name  = "${var.env}.catalogue.DOCDB_URL"
+  type  = "String"
+  value = "mongodb://${data.aws_ssm_parameter.docdb_user.value}:${data.aws_ssm_parameter.docdb_pass.value}@${aws_docdb_cluster.docdb_cluster.endpoint}:27017/catalogue?tls=true&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false"
+}
+
+resource "aws_ssm_parameter" "docdb_url_user" {
+  name  = "${var.env}.user.DOCDB_URL"
+  type  = "String"
+  value = "mongodb://${data.aws_ssm_parameter.docdb_user.value}:${data.aws_ssm_parameter.docdb_pass.value}@${aws_docdb_cluster.docdb_cluster.endpoint}:27017/users?tls=true&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false"
+}
+
+resource "aws_ssm_parameter" "docdb_url" {
+  name  = "${var.env}.docdb.DOCDB_URL"
+  type  = "String"
+  value = aws_docdb_cluster.docdb_cluster.endpoint
+}

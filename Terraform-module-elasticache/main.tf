@@ -56,3 +56,9 @@ resource "aws_elasticache_cluster" "elastic_cache" {
   tags                 = merge (local.common_tags, { Name = "${var.env}-elasticache_subnet_group" } )
 
 }
+
+resource "aws_ssm_parameter" "elastic_point" {
+  name  = "${var.env}.elastic_cache.endpoint"
+  type  = "String"
+  value = aws_elasticache_cluster.elastic_cache.cache_nodes[0].address
+}
