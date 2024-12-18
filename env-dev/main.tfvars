@@ -67,6 +67,14 @@ vpc = {
 
   }
 
+rabbitmq = {
+  main = {
+    vpc_name = "main"
+    subnets_name = "db"
+
+  }
+}
+
 elastic_cache_redis = {
   main = {
     vpc_name        = "main"
