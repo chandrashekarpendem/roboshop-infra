@@ -90,6 +90,7 @@ module "rabbitmq" {
   source = "./Terraform-module-rabbittmq"
   env                     = var.env
   for_each                = var.rabbitmq
+  allow_bastion_cidr      = var.allow_bastion_cidr
 
   subnets_name            = each.value.subnets_name
 
