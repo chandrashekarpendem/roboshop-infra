@@ -67,6 +67,7 @@ resource "aws_iam_instance_profile" "aws_app_instance_profile" {
 
 resource "aws_iam_policy_attachment" "aws_policy_attachment_to_role" {
   name       = aws_iam_role.aws_app_instance_role.name
+
   policy_arn = aws_iam_policy.aws_parameter_policy.arn
 }
 
