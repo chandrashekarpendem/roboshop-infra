@@ -86,7 +86,7 @@ module "apps" {
   subnet_ids              = lookup(lookup(lookup(lookup(module.network_vpc, each.value.vpc_name,null ), each.value.subnets_type, null), each.value.subnets_name, null),"subnets_ids", null)
 }
 
-module "alb" {
+module "rabbitmq" {
   source = "./Terraform-module-rabbittmq"
   env                     = var.env
   for_each                = var.rabbitmq
