@@ -91,6 +91,7 @@ module "rabbitmq" {
   env                     = var.env
   for_each                = var.rabbitmq
   allow_bastion_cidr      = var.allow_bastion_cidr
+  component               = each.value.component
 
   subnets_name            = each.value.subnets_name
 
