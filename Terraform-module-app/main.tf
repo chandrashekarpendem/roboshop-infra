@@ -152,7 +152,7 @@ resource "aws_route53_record" "alb_DNS_record" {
   name    = "${var.component}-${var.env}.chandra.shop"
   type    = "CNAME"
   ttl     = 30
-  records = var.alb_dns_name
+  records = [var.alb_dns_name]
 }
 
 resource "aws_lb_target_group" "target_group" {
