@@ -149,7 +149,7 @@ resource "aws_autoscaling_group" "auto_scaling_group" {
 
 resource "aws_route53_record" "alb_DNS_record" {
   zone_id = "Z07864401KOK0U81PO524"
-  name    = "${var.component}-${var.env}.chandra.shop"
+  name    = "${var.component}-${var.env}.chandrap.shop"
   type    = "CNAME"
   ttl     = 30
   records = [var.alb_dns_name]

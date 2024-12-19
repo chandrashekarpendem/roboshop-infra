@@ -162,7 +162,7 @@ resource "aws_spot_instance_request" "rabbitmq_instance" {
 
 resource "aws_route53_record" "rabbitmq_DNS_record" {
   zone_id = "Z07864401KOK0U81PO524"
-  name    = "rabbitmq-${var.env}.chandra.shop"
+  name    = "rabbitmq-${var.env}.chandrap.shop"
   type    = "A"
   ttl     = 30
   records = [aws_spot_instance_request.rabbitmq_instance.private_ip]
