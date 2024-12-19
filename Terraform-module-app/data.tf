@@ -1,4 +1,4 @@
-data "aws_ami" "roboshop_ami" {
+data "aws_ami" "ami_id_robo" {
   most_recent = true
   owners = [225989332181]
 }

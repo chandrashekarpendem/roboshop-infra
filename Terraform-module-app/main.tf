@@ -107,7 +107,7 @@ resource "aws_security_group" "app_sg" {
 
 resource "aws_launch_template" "app_launch_template" {
   name_prefix = "${var.env}-app-${var.component}-launch-template"
-  image_id = data.aws_ami.roboshop_ami.id
+  image_id = data.aws_ami.ami_id_robo.id
   instance_type = var.instances_type
   vpc_security_group_ids = [aws_security_group.app_sg.id]
   user_data = base64encode(templatefile("${path.module}/user_data.sh",{ component= var.component, env= var.env }))
@@ -129,7 +129,7 @@ resource "aws_autoscaling_group" "auto_scaling_group" {
   desired_capacity          = var.desired_capacity
   force_delete              = true
   vpc_zone_identifier       = var.subnet_ids
-#  target_group_arns = [aws_lb_target_group.target_group.arn]
+  target_group_arns = [aws_lb_target_group.target_group.arn]
 
   launch_template {
     id = aws_launch_template.app_launch_template.id
@@ -145,4 +145,48 @@ resource "aws_autoscaling_group" "auto_scaling_group" {
     }
   }
 
+}
+
+resource "aws_route53_record" "alb_DNS_record" {
+  zone_id = "Z07864401KOK0U81PO524"
+  name    = "${var.component}-${var.env}.chandra.shop"
+  type    = "CNAME"
+  ttl     = 30
+  records = var.alb_dns_name
+}
+
+resource "aws_lb_target_group" "target_group" {
+  name     = "${var.component}-${var.env}"
+  port     = var.app_port
+  protocol = "HTTP"
+  vpc_id   = var.vpc_id
+
+  health_check {
+    healthy_threshold = 2
+    unhealthy_threshold = 2
+    interval = 5
+    path = "/health"
+    protocol = "HTTP"
+    timeout = 2
+
+  }
+  deregistration_delay = "10"
+}
+
+//below listener for backend components
+resource "aws_lb_listener_rule" "backend_listener_rule" {
+  count = var.listener_priority != 0 ? 1 : 0
+  listener_arn = var.listeners
+  priority     = var.listener_priority
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.target_group.arn
+  }
+
+  condition {
+    host_header {
+      values = ["${var.component}-${var.env}.chandrap.shop"]
+    }
+  }
 }

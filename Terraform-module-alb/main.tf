@@ -33,3 +33,20 @@ resource "aws_alb" "ALB" {
 
   tags = merge(local.common_tags, {NAME="${var.env}-alb-${var.subnets_name}"})
 }
+
+resource "aws_lb_listener" "listeners" {
+  count = var.internal ? 1 : 0
+  load_balancer_arn = aws_alb.ALB.arn
+  port              = "80"
+  protocol          = "HTTP"
+
+  default_action {
+    type = "fixed-response"
+
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "NO_RULE"
+      status_code  = "503"
+    }
+  }
+}

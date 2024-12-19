@@ -77,10 +77,13 @@ module "apps" {
 
   component               = each.value.component
   app_port                = each.value.app_port
+  listener_priority       = each.value.listener_priority
   desired_capacity        = each.value.desired_capacity
   max_size                = each.value.max_size
   min_size                = each.value.min_size
   instances_type          = each.value.instances_type
+  alb_dns_name            = lookup(lookup(module.alb, each.value.alb, null),"alb_dns_name",null)
+  listeners        = lookup(lookup(module.alb, each.value.alb,null ),"listeners", null)
   vpc_id                  = lookup(lookup(module.network_vpc,each.value.vpc_name,null ), "vpc_id",null)
   allow_cidr_apps         = lookup(lookup(lookup(lookup(var.vpc, each.value.vpc_name, null ), each.value.allow_cidr_subnets_type , null), each.value.allow_cidr_subnets_name,null), "cidr_block", null)
   subnet_ids              = lookup(lookup(lookup(lookup(module.network_vpc, each.value.vpc_name,null ), each.value.subnets_type, null), each.value.subnets_name, null),"subnets_ids", null)

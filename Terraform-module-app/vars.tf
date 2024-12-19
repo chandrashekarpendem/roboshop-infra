@@ -9,3 +9,6 @@ variable "min_size" {}
 variable "max_size" {}
 variable "instances_type" {}
 variable "allow_bastion_cidr" {}
+variable "alb_dns_name" {}
+variable "listeners" {}
+variable "listener_priority" {}

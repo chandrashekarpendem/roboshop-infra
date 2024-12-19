@@ -118,6 +118,8 @@ apps = {
     desired_capacity = 1
     max_size = 2
     min_size = 1
+    alb = "public"
+    listener_priority = 0
   }
 
   catalogue = {
@@ -125,13 +127,15 @@ apps = {
     vpc_name      = "main"
     subnets_type  = "private_subnets_ids"
     subnets_name  = "app"
-    app_port      = 8080
+    app_port      = 80
     allow_cidr_subnets_type = "private_subnets"
     allow_cidr_subnets_name = "app"
     instances_type = "t3.micro"
     desired_capacity = 1
     max_size = 2
     min_size = 1
+    alb = "private"
+    listener_priority = 100
   }
 
   cart = {
@@ -139,13 +143,15 @@ apps = {
     vpc_name      = "main"
     subnets_type  = "private_subnets_ids"
     subnets_name  = "app"
-    app_port      = 8080
+    app_port      = 80
     instances_type = "t3.micro"
     allow_cidr_subnets_type = "private_subnets"
     allow_cidr_subnets_name = "app"
     desired_capacity = 1
     max_size = 2
     min_size = 1
+    alb = "private"
+    listener_priority = 101
   }
   user = {
     component     = "user"
@@ -153,12 +159,14 @@ apps = {
     subnets_type  = "private_subnets_ids"
     subnets_name  = "app"
     instances_type = "t3.micro"
-    app_port      = 8080
+    app_port      = 80
     allow_cidr_subnets_type = "private_subnets"
     allow_cidr_subnets_name = "app"
     desired_capacity = 1
     max_size = 2
     min_size = 1
+    alb = "private"
+    listener_priority = 102
   }
   payment = {
     component     = "payment"
@@ -166,11 +174,13 @@ apps = {
     subnets_type  = "private_subnets_ids"
     subnets_name  = "app"
     instances_type = "t3.micro"
-    app_port      = 8080
+    app_port      = 80
     allow_cidr_subnets_type = "private_subnets"
     allow_cidr_subnets_name = "app"
     desired_capacity = 1
     max_size = 2
     min_size = 1
+    alb = "private"
+    listener_priority = 103
   }
 }
