@@ -106,15 +106,15 @@ output "vpc" {
   value = module.network_vpc
 }
 
-output "vpc" {
+output "rabbitmq" {
   value = module.rabbitmq
 }
-output "vpc" {
+output "alb" {
   value = module.alb
 }
-output "vpc" {
+output "apps" {
   value = module.apps
 }
-output "vpc" {
+output "elastic_cache_redis" {
   value = module.elastic_cache_redis
 }
