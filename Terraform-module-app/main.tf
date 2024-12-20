@@ -173,8 +173,8 @@ resource "aws_lb_target_group" "target_group" {
   deregistration_delay = "10"
 }
 
-//below listener for backend components
-resource "aws_lb_listener_rule" "listeners" {
+//below listener rule for backend components
+resource "aws_lb_listener_rule" "backend_listener_rule" {
   count = var.listener_priority != 0 ? 1 : 0
   listener_arn = var.listeners
   priority     = var.listener_priority
