@@ -34,7 +34,7 @@ resource "aws_alb" "ALB" {
   tags = merge(local.common_tags, {NAME="${var.env}-alb-${var.subnets_name}"})
 }
 
-//below listener  for backend components and frontend_listener_creating in app module
+//below listener  for backend components and frontend_listener_creating in app modules
 resource "aws_lb_listener" "backend_listener" {
   count = var.internal ? 1 : 0
   load_balancer_arn = aws_alb.ALB.arn
