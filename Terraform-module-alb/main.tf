@@ -5,7 +5,7 @@ resource "aws_security_group" "alb_sg" {
 
 
   ingress {
-    description      = "HTTP-ALB"
+    description      = "HTTP"
     from_port        = 80
     to_port          = 80
     protocol         = "tcp"
