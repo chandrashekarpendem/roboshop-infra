@@ -4,6 +4,6 @@ output "alb_dns_name" {
 output "alb_arn" {
   value = aws_alb.ALB.arn
 }
-output "listeners" {
-  value = try(aws_lb_listener.listeners.*.arn[0], null)
+output "backend_app_listener" {
+  value = try(aws_lb_listener.backend_app_listener.*.arn[0], null)
 }

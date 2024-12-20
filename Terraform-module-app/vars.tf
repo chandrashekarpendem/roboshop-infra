@@ -10,6 +10,6 @@ variable "max_size" {}
 variable "instances_type" {}
 variable "allow_bastion_cidr" {}
 variable "alb_dns_name" {}
-variable "listeners" {}
+variable "backend_app_listener" {}
 variable "alb_arn" {}
 variable "listener_priority" {}
