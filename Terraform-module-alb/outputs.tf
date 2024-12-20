@@ -5,5 +5,5 @@ output "alb_arn" {
   value = aws_alb.ALB.arn
 }
 output "listeners" {
-  value = try(aws_lb_listener.listeners.*.arn[0], null)
+  value = try(aws_lb_listener.backend_listener.*.arn[0], null)
 }

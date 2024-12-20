@@ -35,7 +35,7 @@ resource "aws_alb" "ALB" {
 }
 
 //below listener  for backend components and frontend_listener_creating in app module
-resource "aws_lb_listener" "listeners" {
+resource "aws_lb_listener" "backend_listener" {
   count = var.internal ? 1 : 0
   load_balancer_arn = aws_alb.ALB.arn
   port              = "80"
