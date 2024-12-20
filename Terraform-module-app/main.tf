@@ -102,7 +102,7 @@ resource "aws_security_group" "app_sg" {
 
   }
 
-  tags = merge(local.common_tags, { Name="${var.env}_app_security_group" })
+  tags = merge(local.common_tags, { Name="${var.env}_${var.component}_security_group" })
 }
 
 resource "aws_launch_template" "app_launch_template" {

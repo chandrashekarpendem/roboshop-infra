@@ -12,14 +12,7 @@ resource "aws_security_group" "alb_sg" {
     cidr_blocks      = var.allow_cidr_alb
 
   }
-  ingress {
-    description      = "HTTP-ALB"
-    from_port        = 80
-    to_port          = 80
-    protocol         = "tcp"
-    cidr_blocks      = var.allow_cidr_alb
 
-  }
   egress {
     from_port        = 0
     to_port          = 0
