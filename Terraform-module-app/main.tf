@@ -174,9 +174,9 @@ resource "aws_lb_target_group" "target_group" {
 }
 
 //below listener for backend components
-resource "aws_lb_listener_rule" "backend_listener_rule" {
+resource "aws_lb_listener_rule" "listeners" {
   count = var.listener_priority != 0 ? 1 : 0
-  listener_arn = var.backend_app_listener
+  listener_arn = var.listeners
   priority     = var.listener_priority
 
   action {
