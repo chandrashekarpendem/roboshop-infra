@@ -94,6 +94,14 @@ resource "aws_security_group" "app_sg" {
 
   }
 
+  ingress {
+    description      = "prometheus"
+    from_port        = 9100
+    to_port          = 9100
+    protocol         = "tcp"
+    cidr_blocks      = var.monitor_cidr
+  }
+
   egress {
     from_port        = 0
     to_port          = 0

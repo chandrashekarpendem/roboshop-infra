@@ -8,4 +8,5 @@ variable "alb" {}
 variable "apps" {}
 variable "allow_bastion_cidr" {}
 variable "rabbitmq" {}
+variable "monitor_cidr" {}
 

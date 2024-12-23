@@ -13,3 +13,4 @@ variable "alb_dns_name" {}
 variable "listeners" {}
 variable "alb_arn" {}
 variable "listener_priority" {}
+variable "monitor_cidr" {}

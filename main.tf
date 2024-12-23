@@ -73,6 +73,7 @@ module "apps" {
   env                     = var.env
   for_each                = var.apps
   allow_bastion_cidr      = var.allow_bastion_cidr
+  monitor_cidr            = var.monitor_cidr
   depends_on = [module.docdb, module.rds, module.elastic_cache_redis, module.rabbitmq]
 
   component               = each.value.component
