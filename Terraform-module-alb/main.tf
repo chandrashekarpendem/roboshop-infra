@@ -13,6 +13,15 @@ resource "aws_security_group" "alb_sg" {
 
   }
 
+  ingress {
+    description      = "HTTPS"
+    from_port        = 443
+    to_port          = 443
+    protocol         = "tcp"
+    cidr_blocks      = var.allow_cidr_alb
+
+  }
+
   egress {
     from_port        = 0
     to_port          = 0
@@ -50,4 +59,13 @@ resource "aws_lb_listener" "backend_listener" {
       status_code  = "503"
     }
   }
+}
+
+resource "aws_route53_record" "public_alb_DNS_record" {
+  count   = var.internal ? 0 : 1
+  zone_id = "Z07864401KOK0U81PO524"
+  name    = var.dns_domain
+  type    = "CNAME"
+  ttl     = 30
+  records = [aws_alb.ALB.dns_name]
 }

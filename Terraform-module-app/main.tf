@@ -154,7 +154,17 @@ resource "aws_autoscaling_group" "auto_scaling_group" {
   }
 
 }
-
+resource "aws_autoscaling_policy" "cpu-tracking-policy" {
+  name        = "whenCPULoadIncrease"
+  policy_type = "TargetTrackingScaling"
+  target_tracking_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ASGAverageCPUUtilization"
+    }
+    target_value = 30.0
+  }
+  autoscaling_group_name = aws_autoscaling_group.auto_scaling_group.name
+}
 resource "aws_route53_record" "alb_DNS_record" {
   zone_id = "Z07864401KOK0U81PO524"
   name    = "${var.component}-${var.env}.chandrap.shop"
@@ -212,5 +222,23 @@ resource "aws_lb_listener" "frontend_app_listener" {
     type = "forward"
     target_group_arn = aws_lb_target_group.target_group.arn
 
+  }
+}
+
+resource "aws_lb_listener" "frontend_http_redirect" {
+  count = var.listener_priority == 0 ? 1 : 0
+  load_balancer_arn = var.alb_arn
+  port              = "80"
+  protocol          = "HTTP"
+
+
+  default_action {
+    type = "redirect"
+
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
   }
 }
