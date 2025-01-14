@@ -56,41 +56,41 @@ module "elastic_cache_redis" {
   subnet_ids              = lookup(lookup(lookup(lookup(module.network_vpc, each.value.vpc_name,null ), "private_subnets_ids", null), each.value.subnets_name, null),"subnets_ids", null)
 }
 
-module "alb" {
-  source = "./Terraform-module-alb"
-  env                     = var.env
-  for_each                = var.alb
+#module "alb" {
+#  source = "./Terraform-module-alb"
+#  env                     = var.env
+#  for_each                = var.alb
+#
+#  subnets_name            = each.value.subnets_name
+#  dns_domain                = each.value.dns_domain
+#  internal                = each.value.internal
+#  vpc_id                  = lookup(lookup(module.network_vpc,each.value.vpc_name,null ), "vpc_id",null)
+#  allow_cidr_alb          =  each.value.internal ? concat(lookup(lookup(lookup(lookup(var.vpc, each.value.vpc_name, null ), "private_subnets" , null), "web",null), "cidr_block", null), lookup(lookup(lookup(lookup(var.vpc, each.value.vpc_name, null ), "private_subnets" , null), "app",null), "cidr_block", null)): [ "0.0.0.0/0" ]
+#  subnet_ids              = lookup(lookup(lookup(lookup(module.network_vpc, each.value.vpc_name,null ), each.value.subnets_type, null), each.value.subnets_name, null),"subnets_ids", null)
+#}
 
-  subnets_name            = each.value.subnets_name
-  dns_domain                = each.value.dns_domain
-  internal                = each.value.internal
-  vpc_id                  = lookup(lookup(module.network_vpc,each.value.vpc_name,null ), "vpc_id",null)
-  allow_cidr_alb          =  each.value.internal ? concat(lookup(lookup(lookup(lookup(var.vpc, each.value.vpc_name, null ), "private_subnets" , null), "web",null), "cidr_block", null), lookup(lookup(lookup(lookup(var.vpc, each.value.vpc_name, null ), "private_subnets" , null), "app",null), "cidr_block", null)): [ "0.0.0.0/0" ]
-  subnet_ids              = lookup(lookup(lookup(lookup(module.network_vpc, each.value.vpc_name,null ), each.value.subnets_type, null), each.value.subnets_name, null),"subnets_ids", null)
-}
-
-module "apps" {
-  source = "./Terraform-module-app"
-  env                     = var.env
-  for_each                = var.apps
-  allow_bastion_cidr      = var.allow_bastion_cidr
-  monitor_cidr            = var.monitor_cidr
-  depends_on = [module.docdb, module.rds, module.elastic_cache_redis, module.rabbitmq]
-
-  component               = each.value.component
-  app_port                = each.value.app_port
-  listener_priority       = each.value.listener_priority
-  desired_capacity        = each.value.desired_capacity
-  max_size                = each.value.max_size
-  min_size                = each.value.min_size
-  instances_type          = each.value.instances_type
-  alb_dns_name            = lookup(lookup(module.alb, each.value.alb, null),"alb_dns_name",null)
-  listeners               = lookup(lookup(module.alb, each.value.alb,null ),"listeners", null)
-  alb_arn                 = lookup(lookup(module.alb, each.value.alb,null ),"alb_arn", null)
-  vpc_id                  = lookup(lookup(module.network_vpc,each.value.vpc_name,null ), "vpc_id",null)
-  allow_cidr_apps         = lookup(lookup(lookup(lookup(var.vpc, each.value.vpc_name, null ), each.value.allow_cidr_subnets_type , null), each.value.allow_cidr_subnets_name,null), "cidr_block", null)
-  subnet_ids              = lookup(lookup(lookup(lookup(module.network_vpc, each.value.vpc_name,null ), each.value.subnets_type, null), each.value.subnets_name, null),"subnets_ids", null)
-}
+#module "apps" {
+#  source = "./Terraform-module-app"
+#  env                     = var.env
+#  for_each                = var.apps
+#  allow_bastion_cidr      = var.allow_bastion_cidr
+#  monitor_cidr            = var.monitor_cidr
+#  depends_on = [module.docdb, module.rds, module.elastic_cache_redis, module.rabbitmq]
+#
+#  component               = each.value.component
+#  app_port                = each.value.app_port
+#  listener_priority       = each.value.listener_priority
+#  desired_capacity        = each.value.desired_capacity
+#  max_size                = each.value.max_size
+#  min_size                = each.value.min_size
+#  instances_type          = each.value.instances_type
+#  alb_dns_name            = lookup(lookup(module.alb, each.value.alb, null),"alb_dns_name",null)
+#  listeners               = lookup(lookup(module.alb, each.value.alb,null ),"listeners", null)
+#  alb_arn                 = lookup(lookup(module.alb, each.value.alb,null ),"alb_arn", null)
+#  vpc_id                  = lookup(lookup(module.network_vpc,each.value.vpc_name,null ), "vpc_id",null)
+#  allow_cidr_apps         = lookup(lookup(lookup(lookup(var.vpc, each.value.vpc_name, null ), each.value.allow_cidr_subnets_type , null), each.value.allow_cidr_subnets_name,null), "cidr_block", null)
+#  subnet_ids              = lookup(lookup(lookup(lookup(module.network_vpc, each.value.vpc_name,null ), each.value.subnets_type, null), each.value.subnets_name, null),"subnets_ids", null)
+#}
 
 module "rabbitmq" {
   source = "./Terraform-module-rabbittmq"
@@ -104,6 +104,17 @@ module "rabbitmq" {
   allow_cidr_apps          = lookup(lookup(lookup(lookup(module.network_vpc, each.value.vpc_name, null ), "private_subnets_ids", null), "app",null), "app_cidr_block" ,null)
   subnet_ids              = lookup(lookup(lookup(lookup(module.network_vpc, each.value.vpc_name,null ), "private_subnets_ids", null), each.value.subnets_name, null),"subnets_ids", null)
 }
+
+module "eks" {
+  source                 = "./Terraform-module-eks"
+  ENV                    = var.env
+  PRIVATE_SUBNET_IDS     = lookup(lookup(lookup(lookup(module.network_vpc, "main", null), "private_subnets_ids", null), "app", null), "subnets_ids", null)
+  PUBLIC_SUBNET_IDS      = lookup(lookup(lookup(lookup(module.network_vpc, "main", null), "public_subnets_ids", null), "public", null), "subnets_ids", null)
+  DESIRED_SIZE           = 2
+  MAX_SIZE               = 2
+  MIN_SIZE               = 2
+  CREATE_PARAMETER_STORE = true
+}
 output "vpc" {
   value = module.network_vpc
 }
@@ -111,12 +122,7 @@ output "vpc" {
 output "rabbitmq" {
   value = module.rabbitmq
 }
-output "alb" {
-  value = module.alb
-}
-output "apps" {
-  value = module.apps
-}
+
 output "elastic_cache_redis" {
   value = module.elastic_cache_redis
 }
