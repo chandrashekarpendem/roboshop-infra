@@ -110,9 +110,9 @@ module "eks" {
   ENV                    = var.env
   PRIVATE_SUBNET_IDS     = lookup(lookup(lookup(lookup(module.network_vpc, "main", null), "private_subnets_ids", null), "app", null), "subnets_ids", null)
   PUBLIC_SUBNET_IDS      = lookup(lookup(lookup(lookup(module.network_vpc, "main", null), "public_subnets_ids", null), "public", null), "subnets_ids", null)
-  DESIRED_SIZE           = 2
-  MAX_SIZE               = 2
-  MIN_SIZE               = 2
+  DESIRED_SIZE           = 1
+  MAX_SIZE               = 1
+  MIN_SIZE               = 1
   CREATE_PARAMETER_STORE = true
 }
 output "vpc" {
